@@ -1,0 +1,686 @@
+/* ---------------------------------------------------- */
+/* 0. Configuração Global e Variáveis de Cores (Paleta) */
+/* ---------------------------------------------------- */
+:root {
+    /* Cores Fornecidas: */
+    --cor-fundo-principal: #122A44;      /* Azul escuro (Fundo) */
+    --cor-destaque-ciano: #3ECAC6;       /* Azul claro ciano */
+    --cor-destaque-pink: #CC348D;        /* Rosa */
+    --cor-branco: #FAFAFA;               /* Branco */
+    --cor-cinza: #D0CCD0;                /* Cinza */
+    --cor-texto-escuro: #122A44;
+
+    /* Cores Derivadas/Ajustadas com base nas fornecidas: */
+    --cor-fundo-claro: #1B3352;          /* Azul Escuro/Cinzento para Barra de Progresso e Linhas (Mantido para Contraste) */
+    
+    /* Cores das Estruturas (AGORA SEPARADAS) */
+    --cor-fundo-sessao-1: var(--cor-fundo-principal);    /* Lateral Esquerda (Trilhas) */
+    --cor-fundo-sessao-3: var(--cor-fundo-principal);    /* Widgets (Lateral Direita) */
+    --cor-fundo-header: var(--cor-fundo-principal);      /* Menu de Navegação Superior */
+    --cor-fundo-card-widget: #16263B;    /* Fundo dos Cards de Informação e Top Card Central */
+
+    /* Cores de Texto */
+    --cor-texto-principal: var(--cor-branco);
+    --cor-texto-secundario: var(--cor-cinza); 
+    --cor-texto-escuro: #030000;
+    
+    /* Variáveis de Medidas */
+    --largura-coluna-1: 270px;
+    --largura-coluna-3: 300px;
+    --padding-geral: 20px;
+    --borda-radius: 10px;
+    
+    /* AJUSTE DE ALTURA 1: Altura Individual de Cada Card de Trilha */
+    --altura-card-trilha: 120px; /* <--- Aumentado um pouco para exemplo (você pode ajustar) */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--cor-fundo-principal);
+    color: var(--cor-texto-principal);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+
+
+/* Estrutura Principal do Dashboard */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: var(--largura-coluna-1) 1fr var(--largura-coluna-3); 
+    gap: 30px; 
+    padding: var(--padding-geral);
+    padding-top: 100px; 
+    min-height: 100vh;
+}
+
+/* Estilo Base para as Três Sessões */
+.sessao {
+    background-color: transparent;
+    border-radius: var(--borda-radius);
+    max-height: 100%;
+}
+
+/* ---------------------------------------------------- */
+/* 2. Sessão 1: Seleção de Trilhas (Lateral Esquerda) */
+/* ---------------------------------------------------- */
+.sessao-trilhas {
+    padding: 10px 15px;
+    background-color: var(--cor-fundo-sessao-1); 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    overflow: hidden; 
+    max-height: calc(100vh - 40px - 60px); 
+    height: 100%; 
+}
+/* Estilo para o cartão que está atualmente selecionado (ativo) */
+.card-trilha.ativo {
+    /* Exemplo: borda azul para indicar que está selecionado */
+    border: 2px solid #007bff; /* Ou a cor de sua preferência */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    transition: all 0.2s ease-in-out;
+}
+
+
+/* ---------------------------------------------------- */
+/* AJUSTE DE ESTILO: Título/Link da Seção de Trilhas */
+/* ---------------------------------------------------- */
+
+.link-titulo-trilhas {
+    /* Herda a cor do texto principal (Branco) */
+    color: var(--cor-texto-principal); 
+    /* Remove o sublinhado padrão de links */
+    text-decoration: none; 
+    /* Define o mesmo tamanho e peso de fonte de um h3 */
+    font-size: 1.17rem; 
+    font-weight: bold; 
+    /* Garante o espaçamento inferior que o h3 tinha */
+    margin-bottom: 10px; 
+    /* Transforma em um bloco para garantir a margem e o espaçamento */
+    display: block;
+    /* Adiciona um cursor de ponteiro para indicar que é clicável */
+    cursor: pointer;
+    /* Transição suave para o hover */
+    transition: color 0.2s; 
+}
+
+.guide {
+    border:none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--cor-destaque-pink);
+    color: var(--cor-texto-principal);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.link-titulo-trilhas:hover {
+    /* Efeito sutil para indicar o clique */
+    color: var(--cor-destaque-ciano); 
+}
+
+/* Setas de navegação (Botões de Scroll) */
+.card-arrow-up, .card-arrow-down {
+    width: 100%;
+    padding: 5px 0;
+    text-align: center;
+    font-size: 2.0em; 
+    line-height: 1;
+    cursor: pointer;
+    color: var(--cor-destaque-ciano); 
+    z-index: 20;
+    background-color: var(--cor-fundo-sessao-1); 
+    transition: opacity 0.2s;
+}
+.card-arrow-up:hover, .card-arrow-down:hover {
+    opacity: 0.8;
+}
+
+/* O wrapper com scroll vertical */
+.trilhas-list-wrapper {
+    flex-grow: 1;
+    width: 100%;
+    /* AJUSTE DE ALTURA 2: Define o limite visual para 4 cards + espaçamento */
+    height: calc(4 * var(--altura-card-trilha) + 3 * 20px); 
+    overflow-y: scroll;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaçamento entre os cards */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.trilhas-list-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+/* Estilo do Card Individual da Trilha */
+.card-trilha {
+    width: 100%; 
+    height: var(--altura-card-trilha); /* Puxa a altura da variável ajustada no :root */
+    margin: 5px 0; 
+    padding: 15px;
+    border-radius: var(--borda-radius);
+    color: var(--cor-texto-principal);
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: transform 0.2s, box-shadow 0.2s; 
+    flex-shrink: 0; 
+}
+
+/* Efeito de Fundo Gradiente */
+.card-trilha::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    border-radius: var(--borda-radius);
+    transition: background 0.3s, opacity 0.3s, border 0.3s;
+}
+
+
+
+
+/* Card INATIVO (Ciano) */
+.card-trilha:not(.active)::before {
+    background: linear-gradient(135deg, var(--cor-destaque-ciano), var(--cor-destaque-ciano) 70%, var(--cor-destaque-ciano));
+    opacity: 1;
+    border: 1px solid var(--cor-destaque-ciano);
+}
+
+/* EFEITO HOVER: Ciano para Rosa/Pink */
+.card-trilha:not(.active):hover::before {
+    background: linear-gradient(135deg, var(--cor-destaque-pink), var(--cor-destaque-pink) 70%, var(--cor-destaque-pink));
+    opacity: 0.8;
+    border: 1px solid var(--cor-destaque-pink);
+    box-shadow: 0 0 8px #CC348D(204, 52, 141, 0.3);
+}
+
+/* Conteúdo interno do Card */
+.card-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    /* Aumentado o alinhamento vertical para compensar a altura maior */
+    height: 100%; 
+    gap: 10px;
+    position: relative;
+    z-index: 2; 
+}
+
+.card-image-placeholder {
+    width: 45px;
+    height: 45px;
+    background-color: var(--cor-branco); 
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.card-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centralizado verticalmente */
+}
+
+.card-dificuldade {
+    font-size: 0.75rem;
+    color: var(--cor-cinza);
+    margin: 0;
+}
+
+.card-nome {
+    font-size: 1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.card-percentual {
+    font-size: 0.8rem; 
+    font-weight: bold;
+    flex-shrink: 0;
+    align-self: flex-end; 
+}
+
+.progress-bar-container {
+    height: 8px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 5px;
+    width: 90%;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--cor-branco);
+    border-radius: 4px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* ---------------------------------------------------- */
+/* 3. Sessão 3: Widgets (Lateral Direita) */
+/* ---------------------------------------------------- */
+
+.sessao-widgets {
+    display: flex;
+    flex-direction: column;
+    gap: var(--padding-geral);
+}
+
+/* Estilo do contêiner principal - aside */
+.painel-info {
+    /* Dimensões aproximadas da área de exibição dos cards no design (320px de largura) */
+    width: 320px;
+    /* Altura será determinada pelo conteúdo */
+    /* Usando flexbox para empilhar os cards */
+    display: flex;
+    flex-direction: column;
+    gap: 16px; /* Espaço entre os cards */
+    padding: 16px; /* Espaçamento interno */
+    background-color: var(--cor-fundo-principal); /* Fundo azul escuro */
+}
+
+/* Estilo base para todos os cards brancos */
+.card-branco {
+    background-color: var(--cor-branco);
+    border-radius: 8px; /* Bordas arredondadas */
+    padding: 16px;
+    box-shadow: 0 4px 6px rgba(14, 32, 52, 1);
+}
+
+/* Títulos dos cards */
+.card-branco h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: var(--cor-texto-escuro);
+    font-size: 1.1em;
+    font-weight: normal;
+}
+
+/* Parágrafos dos cards */
+.card-branco p {
+    margin-bottom: 16px;
+    color: var(--cor-texto-escuro);
+    font-size: 0.9em;
+    line-height: 1.4;
+
+}
+
+/* --- Card 1: Progresso Semanal --- */
+.card-progresso {
+    text-align: center;
+}
+
+.progresso-detalhes {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    background-color: var(--cor-fundo-card-widget); /* Fundo azul escuro dentro do card */
+    color: var(--cor-branco); /* Texto branco */
+    border-radius: 4px;
+}
+
+.item-progresso {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.item-progresso .numero {
+    font-size: 1.8em;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.item-progresso .rotulo {
+    font-size: 0.7em;
+    opacity: 0.8;
+}
+
+/* --- Card 2: Missões --- */
+.cabecalho-missao {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.cabecalho-missao h4 {
+    margin-bottom: 0;
+}
+
+.ver-mais {
+    text-decoration: none;
+    color: var(--cor-destaque-pink);
+    font-size: 0.75em;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+
+.ver-mais:hover {
+    color: var(--cor-fundo-principal); /* Interatividade: Muda a cor no hover */
+}
+
+.missao-item {
+    display: grid;
+    grid-template-columns: 1fr auto; /* Barra de progresso + texto / porcentagem */
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--cor-fundo-principal);
+}
+
+.missao-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.barra-progresso {
+    grid-column: 1 / span 2; /* Ocupa as duas colunas */
+    height: 10px;
+    background-color: var(--cor-fundo-principal);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 4px;
+}
+
+.progresso-preenchido {
+    height: 100%;
+    background-color: var(--cor-destaque-pink);
+    /* A largura deve ser definida inline no HTML ou dinamicamente (se fosse JS) */
+}
+
+.missao-item p {
+    margin: 0;
+    font-size: 0.85em;
+    color: var(--cor-texto-escuro);
+}
+
+.missao-item .porcentagem {
+    font-size: 0.85em;
+    font-weight: bold;
+    color: var(--cor-texto-escuro);
+    justify-self: end;
+}
+
+/* --- Card 3: 3 dias de ofensiva --- */
+.dias-ofensiva {
+    display: flex;
+    justify-content: space-around;
+    gap: 5px;
+}
+
+.dia {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* Círculo */
+    font-size: 0.8em;
+    font-weight: bold;
+    color: var(--cor-texto-escuro);
+ }
+
+.dia.ativo {
+    background-color: var(--cor-fundo-principal);
+    color: var(--cor-card-fundo);
+    border: 2px solid var(--cor-fundo-principal);
+}
+
+.dia.inativo {
+    background-color: var(--cor-cinza);
+    color: var(--cor-texto-escuro);
+    border: 2px solid var(--cor-texto-escuro);
+    opacity: 0.5;
+}
+
+
+
+
+
+/* ---------------------------------------------------- */
+/* 4. Sessão 2: Principal (Roadmap/Path) */
+/* ---------------------------------------------------- */
+
+.app {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Top Card (Header do Módulo) */
+.top-card{
+    background-color: var(--cor-fundo-card-widget); 
+    padding: 20px;
+    border-radius: var(--borda-radius);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    position: relative;
+    padding-top: 40px; 
+}
+
+/* Barra de Progresso Superior (Fundo) */
+.top-card::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    width: calc(100% - 40px);
+    height: 15px;
+    background-color: var(--cor-fundo-claro);
+    border-radius: 10px;
+    z-index: 1;
+}
+
+/* Barra de Progresso Superior (Preenchimento - 60% Exemplo) */
+.top-card::after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    width: 60%; 
+    height: 15px;
+    background-color: var(--cor-destaque-pink);
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background-color: var(--cor-fundo-claro);
+    padding: 15px 20px;
+    border-radius: 8px;
+    position: relative;
+    z-index: 3;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.small {
+    font-size: 0.8rem;
+    color: var(--cor-destaque-ciano);
+    font-weight: 700;
+}
+
+.large {
+    font-size: 1.5rem;
+    color: var(--cor-texto-principal);
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+.guide {
+    border:none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: var(--cor-destaque-pink);
+    color: var(--cor-texto-principal);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* Layout do Path (Caminho de Módulos) */
+.stage {
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+}
+
+.scroll-area {
+    width: 100%; 
+    height: calc(100vh - 40px - 60px - 150px); 
+    overflow-y: auto;
+    padding: 25px 0;
+    
+    /* Esconder a barra de scroll */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+.scroll-area::-webkit-scrollbar {
+    display: none;
+}
+
+.path {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px; 
+}
+
+.line-spacer {
+    height: 30px; 
+    width: 0;
+    list-style: none;
+    position: relative;
+}
+
+/* NÓS */
+.node {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 10px;
+}
+
+/* LINHAS DE CONEXÃO */
+.node:not(.trophy)::after, .line-spacer::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 90px; 
+    height: 40px; 
+    width: 5px;
+    background-color: var(--cor-fundo-claro);
+    z-index: 1;
+}
+
+.line-spacer::after {
+    top: 0; 
+    height: 40px; 
+}
+
+/* Link/Círculo Interno */
+.circle-link {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    background-color: var(--cor-fundo-claro); 
+    border-radius: 50%;
+    border: 5px solid var(--cor-fundo-principal); 
+    position: relative;
+    z-index: 2;
+}
+
+/* Efeito do Ícone (Placeholder) */
+.circle-link::before {
+    content: '';
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+}
+
+/* NÓ CONCLUÍDO (Completed - Pink) */
+.node.completed .circle-link {
+    background: var(--cor-destaque-pink); 
+    border: 5px solid var(--cor-destaque-pink);
+    box-shadow: 0 0 10px rgba(204, 52, 141, 0.4);
+}
+
+.node.completed .circle-link::before {
+    content: '✓'; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--cor-branco);
+    color: var(--cor-destaque-pink);
+    font-size: 20px;
+    font-weight: 900;
+}
+
+/* NÓ TROFÉU (Trophy) */
+.node.trophy .circle-link {
+    background: var(--cor-destaque-ciano); 
+    border: 5px solid var(--cor-destaque-ciano);
+    box-shadow: 0 0 10px rgba(62, 202, 198, 0.4);
+}
+
+.node.trophy .circle-link::before {
+    content: '🏆'; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--cor-branco);
+    color: var(--cor-destaque-ciano);
+    font-size: 20px;
+}
+
+/* Zig-zag: Mantenha o transform para o efeito de onda */
+.path li:nth-child(even){ transform:translateX(-60px); }
+.path li:nth-child(odd){ transform:translateX(30px); }
+
+/* Corrigir o Nó Atual para ser Pink, mesmo que o completed seja o "padrão" */
+.node.completed.current .circle-link {
+    border: 5px solid var(--cor-destaque-ciano); /* Borda ciano para destaque */
+}

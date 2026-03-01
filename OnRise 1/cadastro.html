@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cadastro de Trilha</title>
+  <link rel="stylesheet" href="./cadastro.css" />
+</head>
+<body>
+  <main class="container">
+    <h1 class="titulo-principal">CADASTRO TRILHA</h1>
+
+    <section class="bloco-principal">
+      <div class="col-esquerda">
+        <div class="box box-descricao">
+          <h2>CADASTRO DE TRILHA</h2>
+
+          <div class="campo-texto">
+            <textarea placeholder="DESCRIÇÃO DA TRILHA..."></textarea>
+            <div class="imagem-trilha">
+              <label for="imgTrilha">+</label>
+              <input type="file" id="imgTrilha" accept="image/*" />
+              <p>IMAGEM DA TRILHA</p>
+            </div>
+          </div>
+
+          <h2>CURSOS E ATIVIDADES</h2>
+          <button type="button" class="btn-add">ADICIONAR CURSO +</button>
+
+          <div class="lista-cursos">
+            <div class="curso-item">
+              <div class="miniatura"></div>
+              <div class="curso-info">
+                <span class="curso-nome">[NOME porro quisam est OU]</span>
+              </div>
+            </div>
+
+            <div class="curso-item">
+              <div class="miniatura"></div>
+              <div class="curso-info">
+                <span class="curso-nome">[NOME porro quisam est OU]</span>
+              </div>
+            </div>
+
+            <div class="curso-item">
+              <div class="miniatura"></div>
+              <div class="curso-info">
+                <span class="curso-nome">[NOME porro quisam est OU]</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="linha-inferior">
+            <div class="campo-duracao">
+              <label for="duracao">DURAÇÃO ESTIMADA:</label>
+              <input type="text" id="duracao" placeholder="ex: 8 horas" />
+            </div>
+
+            <div class="campo-certificacao">
+              <label for="cert">CERTIFAÇÃO:</label>
+              <input type="checkbox" id="cert" />
+              <span class="slider"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="botoes">
+          <button type="submit" class="btn salvar">SALVAR</button>
+          <button type="reset" class="btn cancelar">CANCELAR</button>
+        </div>
+      </div>
+
+      <aside class="col-direita">
+        <div class="box box-dificuldade">
+          <h2>DIFICULDADE</h2>
+          <ul class="lista-dificuldade">
+            <li><input type="radio" name="dif" checked /> FÁCIL</li>
+            <li><input type="radio" name="dif" /> MÉDIO</li>
+            <li><input type="radio" name="dif" /> DIFÍCIL</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <script src="./cadastro.js"></script>
+</body>
+</html>

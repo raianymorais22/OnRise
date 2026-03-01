@@ -1,0 +1,10 @@
+{
+  "indices": [
+    {
+      "id": "1",
+      "nome": "Teste",
+      "preço": "1,69",
+      "percent": "-99"
+    }
+  ]
+}

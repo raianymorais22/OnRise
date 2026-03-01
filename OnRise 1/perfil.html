@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>ONRISE - Meu Perfil</title>
+    <link rel="stylesheet" href="perfil.css">
+    <!-- CDN do Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="brand">ONRISE</div>
+
+        <nav class="main-nav" aria-label="editoriais">
+
+        </nav>
+
+        <div class="header-right">
+            <div class="pills">
+            <a href="index.html"><div class="pill ajustes">NOTÍCIAS</div></a>
+            <a href="info.html"><div class="pill ajustes">INFORMAÇÕES</div></a>
+            <a href="indexmoi.html"><div class="pill ajustes">TRILHAS</div></a>
+            <a href="perfil.html"><div class="pill ajustes">PERFIL</div></a>
+            <a href="forum.html"><div class="pill ajustes">FORUM</div></a>
+      </div>
+        </div>
+    </header>
+
+    <main class="conteudo">
+        <nav class="conteudo--informacoesDoUsuario">
+            <h1 id="conteudo--titulo">Meu perfil</h1>
+            <div class="avatar-container">
+                <img id="usuarioAvatar" src="https://via.placeholder.com/300x300?text=Usuario" alt="Avatar do usuário"
+                    style="cursor: pointer;">
+                <button type="button" id="btnTrocarFoto" class="btn-trocar-foto">📷</button>
+            </div>
+            <input type="file" id="inputFoto" accept="image/*" style="display: none;">
+            <h4 id="usuarioNome">Nome do Usuário</h4>
+            <p id="usuarioEmail">email@exemplo.com</p>
+            <button type="button" id="informacoesDoUser">INFORMAÇÕES</button>
+            <button type="button" id="informacoesTrilhas">TRILHAS</button>
+        </nav>
+
+        <section class="conteudoInformacoes">
+            <div class="info-container">
+
+                <div class="info-column">
+                    <h3>Dados Pessoais</h3>
+
+                    <div class="form-group">
+                        <label>Nome Completo</label>
+                        <input type="text" id="nomeUsuario" placeholder="Seu nome completo">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="emailUser" placeholder="seu.email@exemplo.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input type="tel" id="telefoneUsuario" placeholder="(11) 99999-9999">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Data de Nascimento</label>
+                        <input type="date" id="dataNascimento">
+                    </div>
+                </div>
+
+                <div class="info-column">
+                    <h3>Segurança e Preferências</h3>
+
+                    <div class="form-group">
+                        <label>Senha Atual</label>
+                        <input type="password" id="senhaAtual" placeholder="Digite sua senha atual">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Nova Senha</label>
+                        <input type="password" id="senhaNova" placeholder="Digite sua nova senha">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Confirmar Nova Senha</label>
+                        <input type="password" id="confirmarSenha" placeholder="Confirme sua nova senha">
+                    </div>
+
+                    <div class="checkbox-group">
+                        <label>
+                            <input type="checkbox" id="notificacoes" checked>
+                            Receber notificações por email
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <button id="btnSalvar" class="btn-salvar">Salvar Alterações</button>
+                <button id="btnExcluirConta" class="btn-excluir">Excluir Minha Conta</button>
+            </div>
+        </section>
+
+
+        <section class="conteudoTrilhas">
+            <h1>TRILHA ATUAL</h1>
+            <H3 id="trilhaNome">NOME DA TRILHA</H3>
+            <div class="barra">
+                <div class="barraDeProgresso" id="barraProgresso"></div>
+            </div>
+            <div class="modulos" id="modulosContainer">
+                <h3 id="modulo">MODULO 1 <b>VER MAIS</b></h3>
+                <h3 id="modulo">MODULO 2 <b>VER MAIS</b></h3>
+                <h3 id="modulo">MODULO 3 <b>VER MAIS</b></h3>
+            </div>
+            <button id="btnAlterarTrilha">ALTERAR TRILHA</button>
+        </section>
+    </main>
+
+    <div id="modalTrilhas" class="modal modal-trilhas">
+        <div class="modal-content modal-trilhas">
+            <h2>Escolha uma Trilha</h2>
+            <div id="trilhasContainer" class="trilhas-container"></div>
+            <div class="modal-buttons">
+                <button id="btnFecharModalTrilhas">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalModulo" class="modal modal-modulo">
+        <div class="modal-content modal-modulo">
+            <h2 id="modalTituloModulo">Título do Módulo</h2>
+            <p id="modalDescricaoModulo">Descrição do módulo</p>
+            <div class="modal-status">
+                <p><strong>Status:</strong> <span id="modalStatusModulo">Não iniciado</span></p>
+            </div>
+            <div class="modal-buttons">
+                <button id="btnFecharModal">Fechar</button>
+                <button id="btnMarcarConcluido" class="btn-primary">Marcar como Concluído</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="perfil.js"></script>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Detalhe da Notícia — ONRISE</title>
+</head>
+<body>
+  <main style="max-width:900px;margin:48px auto;background:#f8f9fa;padding:28px;border-radius:12px;color:#111;">
+    <a href="index.html" style="color:#00bfa7;text-decoration:none;font-weight:700;">← Voltar às notícias</a>
+    <h1 id="tituloNoticia">Carregando...</h1>
+    <p><strong>Categoria:</strong> <span id="categoriaNoticia"></span></p>
+    <img id="imagemNoticia" alt="Imagem da notícia" style="max-width:100%; display:none; margin-bottom:16px; border-radius:10px;">
+    <div id="conteudoNoticia"></div>
+  </main>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("id");
+
+    if (!id) {
+      document.getElementById("tituloNoticia").textContent = "ID da notícia não informado.";
+    } else {
+      fetch(`http://localhost:3000/noticiasNovas/${id}`)
+        .then(res => {
+          if (!res.ok) throw new Error("Notícia não encontrada");
+          return res.json();
+        })
+        .then(noticia => {
+          document.getElementById("tituloNoticia").textContent = noticia.titulo || "Sem título";
+          document.getElementById("categoriaNoticia").textContent = noticia.categoria || "";
+          const img = document.getElementById("imagemNoticia");
+          if (noticia.imagem) {
+            img.src = noticia.imagem;
+            img.style.display = "block";
+          }
+          document.getElementById("conteudoNoticia").innerHTML = noticia.conteudo || "";
+        })
+        .catch(err => {
+          document.getElementById("tituloNoticia").textContent = "Erro ao carregar notícia.";
+          console.error(err);
+        });
+    }
+  </script>
+</body>
+</html>

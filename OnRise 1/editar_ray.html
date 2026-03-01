@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Editar noticias — ONRISE</title>
+  <link rel="stylesheet" href="style_ray.css" />
+ 
+<style>
+
+    body {
+        background-color: #001d29;
+        font-family: Arial, sans-serif;
+        color: #000000;
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 700px;  
+        background: #f9f9f9;
+        border-radius: 12px;
+        padding: 30px;
+        margin-top: 40px;
+
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+
+        display: flex;
+        flex-direction: column;
+    }
+
+    a {
+        color: #000000;
+        text-decoration: none;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    h1 {
+        text-align: center;
+        color: #000000;
+        margin-bottom: 20px;
+        font-size: 1.6rem;
+    }
+
+    label {
+        font-weight: bold;
+        color: #000000;
+        margin-top: 10px;
+        margin-bottom: 8px;
+        display: block;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        background: #fffcfc;
+        border: 1px solid #4b5352;
+        color: #000000;
+        border-radius: 10px;
+        font-size: 1rem;
+        outline: none;
+    }
+
+    
+    textarea {
+        resize: vertical; 
+    }
+
+    button {
+        margin-top: 22px;
+        width: 100%;
+        padding: 14px;
+        background-color: #000000;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        opacity: 0.8;
+    }
+
+</style>
+
+
+</head>
+
+<body>
+
+<div class="container">
+    <a href="index.html">← Voltar</a>
+    <h1 >Editar Notícia</h1>
+
+    <form id="form-editar">
+        <label>Título:</label>
+        <input type="text" id="titulo">
+
+          <label>Categoria:</label>
+      <select id="categoria" required >
+        <option value="">Selecione...</option>
+        <option value="Economia">ECONOMIA</option>
+        <option value="Criptomoeda">CRIPTOMOEDA</option>
+        <option value="Startups">STARTUPS</option>
+        <option value="Tecnologia">TECNOLOGIA</option>
+        <option value="Esportes">ESPORTES</option>
+        <option value="Opiniao">OPINIAO</option>
+      </select>
+ 
+      <label for="publicado">Publicado em:</label>
+     <input type="date" id="publicado" required />
+
+
+        <label>URL da imagem:</label>
+        <input type="text" id="imagem">
+
+        <label>Conteúdo:</label>
+        <textarea id="conteudo" rows="7"></textarea>
+
+        <button type="button" onclick="salvar()">Salvar Alterações</button>
+    </form>
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+
+const ENDPOINTS = [
+  `http://localhost:3000/noticiasNovas/${id}`,
+  `http://localhost:3000/noticiasDestaques/${id}`
+];
+  function formatarDataParaTela(dataISO) {
+  if (!dataISO) return "";
+
+ 
+  if (dataISO.includes("/")) {
+    const [dia, mes, ano] = dataISO.split("/");
+    return `${ano}-${mes}-${dia}`; 
+  }
+
+  return dataISO; 
+}
+
+let endpointEncontrado = null;
+
+
+async function carregarNoticiaParaEdicao() {
+  for (const url of ENDPOINTS) {
+    try {
+      const res = await fetch(url);
+
+      if (res.ok && res.status !== 404) {
+        const noticia = await res.json();
+
+        if (noticia && noticia.id) {
+          endpointEncontrado = url.replace(`/${id}`, "");
+          preencherFormulario(noticia);
+          return;
+        }
+      }
+    } catch (err) {
+      console.error("Erro ao buscar em:", url, err);
+    }
+  }
+
+  alert("Notícia não encontrada para edição.");
+}
+
+function preencherFormulario(noticia) {
+  document.getElementById("titulo").value = noticia.titulo || "";
+  document.getElementById("categoria").value = noticia.categoria || "";
+  document.getElementById("publicado").value = formatarDataParaTela(noticia.publicado);
+  document.getElementById("conteudo").value = noticia.conteudo || "";
+
+  const campoImagem = document.getElementById("imagem");
+
+ 
+  if (!("imagem" in noticia) || endpointEncontrado.includes("noticiasDestaques")) {
+    campoImagem.value = "";
+    campoImagem.disabled = true;
+    campoImagem.placeholder = "Destaques não usam imagem";
+    campoImagem.style.background = "#e0e0e0";
+  } 
+  
+  else {
+    campoImagem.disabled = false;
+    campoImagem.style.background = "";
+    campoImagem.value = noticia.imagem || "";
+  }
+}
+
+
+
+
+async function salvar() {
+  if (!endpointEncontrado) {
+    alert("Erro: não foi possível identificar onde salvar.");
+    return;
+  }
+
+  const dadosAtualizados = {
+  titulo: document.getElementById("titulo").value,
+  categoria: document.getElementById("categoria").value,
+  publicado: (() => {
+    const data = document.getElementById("publicado").value;
+    if (!data) return "";
+    const [ano, mes, dia] = data.split("-");
+    return `${dia}/${mes}/${ano}`;
+  })(),
+  conteudo: document.getElementById("conteudo").value
+};
+
+
+  
+  const imagem = document.getElementById("imagem").value;
+  if (imagem) dadosAtualizados.imagem = imagem;
+
+  try {
+    const res = await fetch(`${endpointEncontrado}/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dadosAtualizados)
+    });
+
+    if (!res.ok) throw new Error("Erro ao salvar");
+
+    alert("Notícia atualizada com sucesso!");
+    window.location.href = `noticia_ray.html?id=${id}`;
+  } catch (err) {
+    console.error(err);
+    alert("Erro ao salvar alterações.");
+  }
+}
+
+
+carregarNoticiaParaEdicao();
+</script>
+
+</body>
+</html>

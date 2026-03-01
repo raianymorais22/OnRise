@@ -1,0 +1,261 @@
+<!doctype html>
+
+<html lang="pt-BR">
+
+<head>
+
+  <meta charset="utf-8" />
+
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+  <title>ONRISE — Notícias</title>
+
+  <link rel="stylesheet" href="./style_ray.css" />
+
+</head>
+
+<body>
+
+  <header class="site-header">
+
+    <div class="brand">ONRISE</div>
+
+
+
+    <nav class="main-nav" aria-label="editoriais">
+
+      <button class="editorial-btn active" data-category="all">Todos</button>
+
+      <button class="editorial-btn" data-category="economia">Economia</button>
+
+      <button class="editorial-btn" data-category="criptomoeda">Criptomoeda</button>
+
+      <button class="editorial-btn" data-category="startups">Startups</button>
+
+      <button class="editorial-btn" data-category="tecnologia">Tecnologia</button>
+
+      <button class="editorial-btn" data-category="esportes">Esportes</button>
+
+      <button class="editorial-btn" data-category="opiniao">Opinião</button>
+
+    </nav>
+
+
+
+    <div class="header-right">
+
+      <a href="cadastronoticia_ray.html"  class="btn-cadastrar">Cadastrar Notícia</a>
+
+
+
+      
+      <div class="pills">
+        <a href="index.html"><div class="pill ajustes">NOTÍCIAS</div></a>
+        <a href="info.html"><div class="pill ajustes">INFORMAÇÕES</div></a>
+        <a href="indexmoi.html"><div class="pill ajustes">TRILHAS</div></a>
+        <a href="perfil.html"><div class="pill ajustes">PERFIL</div></a>
+        <a href="forum.html"><div class="pill ajustes">FORUM</div></a>
+      </div>
+
+
+
+      <div class="search">
+
+        <input id="searchInput" placeholder="BUSCAR" aria-label="buscar" />
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+
+  <main class="container">
+
+    <section class="left-col">
+
+      <div id="lista-noticias"></div>
+
+      </section>
+
+     
+
+   
+
+<div class="right-top">
+
+  <aside class="right-col fade-up" data-category="all">
+
+    <h3>Destaques</h3>
+
+    <div id="lista-destaques" class="destaques-list">
+
+      </div>
+
+  </aside>
+
+</div>
+
+
+
+  <footer class="footer">
+
+    <p>© 2025 ONRISE — Todos os direitos reservados.</p>
+
+  </footer>
+
+
+
+<script src="script_ray.js" defer></script>
+
+<script>
+
+fetch("http://localhost:3000/noticiasNovas")
+
+  .then(res => res.json())
+
+  .then(lista => {
+
+    const container = document.getElementById("lista-noticias");
+
+    container.innerHTML = "";
+
+
+
+    lista.forEach((noticia) => {
+
+      const card = document.createElement("a");
+
+      card.href = `noticia_ray.html?id=${noticia.id}`;
+
+      card.classList.add("noticia-card");
+      card.setAttribute("data-category", (noticia.categoria || "").toLowerCase());
+
+
+      card.innerHTML = `
+
+        <img src="${noticia.imagem || 'https://via.placeholder.com/200x400'}" alt="Imagem da notícia" style="width: 25%; height: 100px; border-radius: 10px; object-fit: cover;">
+
+        <h2>${noticia.titulo}</h2>
+
+        <p><strong>Categoria:</strong> ${noticia.categoria}</p>
+
+        <p>${noticia.conteudo ? noticia.conteudo.substring(0,120) + "..." : "Sem conteúdo disponível."}</p>
+
+
+
+        <button onclick="editarNoticia(${noticia.id})" class="btn-editar">Editar</button>
+
+        <button onclick="excluirNoticia(${noticia.id})" class="btn-excluir">Excluir</button>
+
+      `;
+
+
+
+
+      container.appendChild(card);
+
+    });
+
+  })
+
+  .catch(err => console.error("Erro ao carregar notícias:", err));
+
+
+
+fetch("http://localhost:3000/noticiasDestaques")
+  .then(res => res.json())
+  .then(lista => {
+    const container = document.getElementById("lista-destaques");
+    container.innerHTML = "";
+
+    lista.forEach(noticia => {
+      const item = document.createElement("div");
+      item.classList.add("destaque-item");
+
+      item.innerHTML = `
+        <h4>${noticia.titulo}</h4>
+        <small>${noticia.categoria}</small><br>
+        <button onclick="excluirDestaque('${noticia.id}')" class="btn-excluir">
+          Excluir
+        </button>
+      `;
+
+      container.appendChild(item);
+    });
+  })
+  .catch(err => console.error("Erro ao carregar destaques:", err));
+
+
+// -------- FUNÇÃO PARA EDITAR --------
+
+function editarNoticia(id) {
+
+  window.location.href = `editar_ray.html?id=${id}`;
+
+}
+
+
+
+ function excluirNoticia(id) {
+  fetch(`http://localhost:3000/noticiasNovas/${id}`, {
+    method: "DELETE"
+  })
+  .then(() => location.reload())
+  .catch(err => console.error("Erro ao excluir notícia:", err));
+}
+
+function excluirDestaque(id) {
+  fetch(`http://localhost:3000/noticiasDestaques/${id}`, {
+    method: "DELETE"
+  })
+  .then(() => location.reload())
+  .catch(err => console.error("Erro ao excluir destaque:", err));
+}
+
+  
+
+// FILTRO POR CATEGORIA
+
+const botoesCategoria = document.querySelectorAll(".editorial-btn");
+
+botoesCategoria.forEach(botao => {
+  botao.addEventListener("click", () => {
+    const categoriaSelecionada = botao.dataset.category.toLowerCase();
+
+    // Ativar botão visualmente
+    botoesCategoria.forEach(b => b.classList.remove("active"));
+    botao.classList.add("active");
+
+    // Filtrar card principal
+    const bigCards = document.querySelectorAll(".big-card");
+    bigCards.forEach(card => {
+      const categoriaCard = (card.dataset.category || "").toLowerCase();
+
+      if (categoriaSelecionada === "all" || categoriaSelecionada === categoriaCard) {
+        card.style.display = "";
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    // Filtrar notícias do JSON
+    const noticias = document.querySelectorAll(".noticia-card");
+    noticias.forEach(card => {
+      const categoriaCard = (card.dataset.category || "").toLowerCase();
+
+      if (categoriaSelecionada === "all" || categoriaSelecionada === categoriaCard) {
+        card.style.display = "flex";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+});
+
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,435 @@
+/* --- RESET E CONFIGURAÇÕES GERAIS --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #15202B;
+    /* Azul Escuro Fundo */
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: row;
+    /* Garante layout lado a lado */
+    overflow: hidden;
+}
+
+/* =========================================
+    LADO ESQUERDO (MAIN CONTENT)
+    ========================================= */
+.main-content {
+    /* Proporção Original: 66% da tela (2 partes) */
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #2C3E50;
+    /* Linha divisória vertical */
+
+    /* Padding: 0 no topo, 30px nos outros lados */
+    padding: 0 30px 30px 30px;
+
+    position: relative;
+    min-width: 0; 
+}
+
+/* --- 1. Cabeçalho Superior --- */
+.top-header {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-left: -30px;
+    margin-right: -30px;
+    padding-left: 30px;
+    padding-right: 30px;
+
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 0;
+
+    border-bottom: 1px solid #2C3E50;
+}
+
+.close-btn {
+    background-color: #4FD1C5;
+    color: #000;
+    border: none;
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+
+.close-btn:hover {
+    background-color: #38b2ac;
+}
+
+.page-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+/* --- 2. Wrapper Central (Busca + Cards) --- */
+.content-center-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+    padding-top: 50px; 
+}
+
+/* Barra de Pesquisa */
+.search-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.search-bar {
+    background-color: #4FD1C5;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+
+    /* Arredondamento apenas superior (10px) */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    width: 95%;
+    /* Mantém a proporção */
+    max-width: 100%;
+}
+
+.search-input {
+    flex: 1;
+    background-color: #15202B;
+    border: none;
+    color: white;
+    padding: 10px;
+    outline: none;
+
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 0;
+}
+
+.search-btn {
+    background: white;
+    border: none;
+    padding: 8px;
+
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 0;
+
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+/* --- Grid de Cards (Scroll Horizontal) --- */
+.courses-grid-scroll {
+    display: grid;
+    /* Estrutura 3x: 3 linhas de altura suficiente para o Card + Título */
+    grid-template-rows: repeat(3, 190px); 
+    grid-auto-flow: column;
+    grid-auto-columns: 260px;
+    /* MUDANÇA 1: Ajusta o gap entre colunas (cursos) */
+    gap: 30px; 
+
+    /* MUDANÇA 2: Adiciona espaço acima do scroll para separá-lo da busca */
+    margin-top: 20px;
+
+    overflow-x: auto; 
+    padding-bottom: 10px;
+    width: 100%;
+    max-width: 100%; 
+    scroll-behavior: smooth;
+}
+
+/* Customização da Barra de Rolagem (Horizontal) */
+.courses-grid-scroll::-webkit-scrollbar {
+    height: 12px;
+}
+
+.courses-grid-scroll::-webkit-scrollbar-track {
+    background: #0d141c;
+    border-radius: 10px;
+}
+
+.courses-grid-scroll::-webkit-scrollbar-thumb {
+    background: #4A5568;
+    border-radius: 3px;
+    border: 2px solid #0d141c;
+}
+
+.courses-grid-scroll::-webkit-scrollbar-thumb:hover,
+.courses-grid-scroll::-webkit-scrollbar-thumb:active {
+    background: #D53F8C;
+}
+
+
+/* Estilo dos Cards */
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; 
+    height: 100%;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.card-container:hover {
+    transform: translateY(-5px);
+}
+
+.card {
+    background-color: white;
+    border-radius: 10px;
+    height: 160px; 
+    width: 100%;
+    overflow: hidden; 
+    position: relative;
+    border: 3px solid transparent; 
+}
+
+/* Capa do Curso */
+.card-cover {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: opacity 0.3s;
+}
+
+/* Título do Curso Abaixo do Card */
+.card-title {
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    padding: 0 5px; 
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 20px; 
+}
+
+
+/* Efeito de Seleção (Sem Borda Branca) */
+.card-container.selected .card {
+    border-color: transparent; 
+    background-color: #D53F8C; 
+}
+
+/* Card 'Adicionar Novo' */
+.add-card-container {
+    background-color: #1E2A38;
+    border: 2px dashed #4A5568;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #4A5568;
+    border-radius: 10px;
+    height: 160px; 
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+.add-card-container:hover {
+    background-color: #2C3E50;
+    border-color: #D53F8C;
+    color: #D53F8C;
+}
+
+.add-card-icon {
+    font-size: 3rem;
+    margin-bottom: 5px;
+}
+/* O Card 'Adicionar Novo' não usa o span de título, então o escondemos para ele */
+.add-card-container + .card-title {
+    display: none;
+}
+
+
+/* =========================================
+    LADO DIREITO (BARRA LATERAL)
+    ========================================= */
+.sidebar {
+    flex: 1;
+    min-width: initial;
+    background-color: #15202B;
+    padding: 30px;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estado Vazio */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    color: #8899a6;
+}
+
+/* Detalhes do Curso (Container) */
+.course-details {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    animation: fadeIn 0.5s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.sidebar-title {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.section-label {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Caixa de Descrição */
+.description-box {
+    width: 100%;
+    height: 80px;
+    background-color: #1E2A38;
+    border: 1px solid #4A5568;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+    color: #ccc;
+    font-size: 0.9rem;
+    resize: none;
+}
+
+.description-box:focus {
+    outline: none;
+}
+
+/* Lista de Conteúdo (Scroll Vertical) */
+.content-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    margin-bottom: 20px;
+}
+
+/* Customização da Scrollbar Vertical (Lista) */
+.content-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.content-list::-webkit-scrollbar-track {
+    background: #15202B;
+}
+
+.content-list::-webkit-scrollbar-thumb {
+    background: #4A5568;
+    border-radius: 3px;
+}
+
+.content-list::-webkit-scrollbar-thumb:hover,
+.content-list::-webkit-scrollbar-thumb:active {
+    background: #D53F8C;
+}
+
+/* Item Individual da Lista */
+.content-item {
+    display: flex;
+    align-items: center;
+    background-color: #1E2A38;
+    border: 1px solid #4A5568;
+    border-radius: 8px;
+    padding: 12px;
+    justify-content: space-between;
+    flex-shrink: 0;
+}
+
+.item-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.item-icon {
+    width: 30px;
+    height: 30px;
+    background-color: #cbd5e0;
+    border-radius: 2px;
+}
+
+.item-type {
+    font-weight: bold;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: white;
+}
+
+/* Rodapé da Sidebar (Botão) */
+.sidebar-footer {
+    margin-top: auto;
+}
+
+.edit-btn {
+    width: 100%;
+    background-color: white;
+    color: #D53F8C;
+    border: none;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.2s;
+}
+
+.edit-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* Utilitários */
+.hidden {
+    display: none !important;
+}

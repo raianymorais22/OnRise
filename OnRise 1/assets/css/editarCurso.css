@@ -1,0 +1,822 @@
+ /* #region ESTILOS GLOBAIS E ESTRUTURA */
+body {
+    background-color: #15202B;
+    color: white;
+    font-family: sans-serif;
+    margin: 0;
+    display: flex;
+    min-height: 100vh;
+}
+
+img {
+    -webkit-user-drag: none;
+    pointer-events: none;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0 20px;
+}
+
+.edit-course-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+/* #endregion */
+
+ /* #region INFO CONTAINER */
+.info-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+/* #endregion */
+
+ /* #region SIDEBAR */
+.sidebar {
+    width: 350px;
+    background-color: #1E2A38;
+    padding: 30px 20px;
+    overflow-y: auto;
+}
+/* #endregion */
+
+ /* #region SCROLLBAR PERSONALIZADA */
+ /* Firefox */
+.info-container,
+.content-edit-grid,
+.sidebar {
+    scrollbar-width: thin;
+    scrollbar-color: #4A5568 #1A202C;
+}
+
+/* Chrome / Edge / Safari */
+.info-container::-webkit-scrollbar,
+.content-edit-grid::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.info-container::-webkit-scrollbar-track,
+.content-edit-grid::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track {
+    background: #1A202C;
+}
+
+.info-container::-webkit-scrollbar-thumb,
+.content-edit-grid::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb {
+    background: #4A5568;
+    border-radius: 20px;
+}
+
+.info-container::-webkit-scrollbar-thumb:hover,
+.content-edit-grid::-webkit-scrollbar-thumb:hover,
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #D53F8C;
+}
+/* #endregion */
+
+ /* #region CABECALHO E BOTÃO FECHAR */
+.top-header {
+    position: relative;
+    padding: 20px 0;
+    border-bottom: 1px solid #2C3E50;
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    color: #4A5568;
+    font-size: 1.5rem;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.page-title {
+    color: white;
+    font-size: 1.8rem;
+    font-weight: 600;
+    text-align: center;
+}
+/* #endregion */
+
+ /* #region TEXTO E RÓTULOS (LABELS) */
+.input-label {
+    display: block;
+    color: #4A5568;
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-top: 10px;
+    text-transform: uppercase;
+}
+
+aside .input-label {
+    margin-top: 20px;
+}
+
+aside > .input-label:first-of-type {
+    margin-top: 0px;
+}
+/* #endregion */
+
+ /* #region INPUTS (TEXTO E TEXTAREA) */
+.course-text-input,
+.course-textarea {
+    width: 100%;
+    background-color: #15202B;
+    color: white;
+    border: 1px solid #4A5568;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.course-text-input {
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+.course-textarea {
+    height: 120px;
+}
+
+.course-text-input:focus,
+.course-textarea:focus {
+    border-color: #D53F8C;
+}
+
+.textarea-lg-sidebar {
+    height: 200px;
+    margin-bottom: 20px;
+}
+
+::placeholder {
+    color: #4A5568;
+    opacity: 1;
+}
+/* #endregion */
+
+ /* #region LINHA CAPA + DETALHES */
+.image-details-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.text-details-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+/* #endregion */
+
+ /* #region TAGS */
+.tag-label-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.tag-limit-message {
+    color: #4A5568;
+    font-size: 0.9rem;
+    font-weight: bold;
+    text-transform: none;
+}
+
+.tag-input-container {
+    background-color: #15202B;
+    border: 1px solid #4A5568;
+    border-radius: 8px;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    min-height: 50px;
+    transition: border-color 0.2s;
+}
+
+.tag-input-container:focus-within {
+    border-color: #D53F8C;
+}
+
+.tag-input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: white;
+    padding: 5px 0;
+    outline: none;
+    font-size: 1rem;
+    min-width: 100px;
+}
+
+.tags-display {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-right: 10px;
+}
+/* #endregion */
+
+ /* #region UPLOAD (CAPA / VÍDEO / ARQUIVO) */
+.image-upload-box-container {
+    height: 200px;
+    width: calc(150px * 16 / 9);
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.upload-box {
+    position: relative;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #4A5568;
+    cursor: pointer;
+    font-weight: bold;
+    overflow: hidden;
+    transition: border-color 0.2s, color 0.2s;
+    width: 100%;
+    height: 100%;
+}
+
+.upload-text {
+    color: #A0AEC0;
+    font-weight: 600;
+    font-size: 1.1rem;
+    z-index: 5;
+}
+
+.upload-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+/* Interações */
+.upload-box:hover .upload-text {
+    color: #D53F8C;
+}
+
+.upload-box:hover {
+    border-color: #D53F8C;
+}
+
+.upload-box.has-media .upload-text {
+    display: none;
+}
+
+/* CONTROLES DO UPLOAD */
+
+.upload-controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.upload-box.has-media:hover .upload-controls {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.upload-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(21, 32, 43, 0.7);
+    z-index: 1;
+}
+
+.upload-delete {
+    background: #D53F8C;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    z-index: 2;
+}
+
+/* Tamanhos específicos para Upload */
+
+.upload-size-video {
+    width: 100%;
+    height: 180px;
+}
+
+.upload-size-file {
+    width: 100%;
+    height: 100px;
+}
+/* #endregion */
+
+ /* #region GRID DE CONTEÚDO E CARDS */
+.content-edit-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 16px;
+    margin-top: 15px;
+    border: 1px solid #4A5568;
+    border-radius: 8px;
+    padding: 15px;
+    max-height: 250px;
+    overflow-y: scroll;
+    scrollbar-gutter: stable;
+}
+
+.add-content-card {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border: 2px dashed #4A5568; 
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background-color 0.2s; 
+}
+
+.add-content-card:hover {
+    border-color: #D53F8C; 
+}
+
+.add-icon {
+    font-size: 32px;
+    color: #A0AEC0; /* NOVO: Cor inicial sutil */
+    transition: color 0.2s; 
+}
+
+.add-content-card:hover .add-icon {
+    color: #D53F8C; /* NOVO: Ícone fica rosa no hover */
+}
+
+.content-item-card {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #2D3748;
+    border-radius: 12px;
+    padding: 6px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Wrapper e Imagem do ícone central */
+.icon-wrapper {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.content-item-image {
+    width: 48px;
+    height: 48px;
+    opacity: 0.9;
+    object-fit: contain;
+}
+
+/* Botão de remover */
+.remove-content-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: transparent;
+    border: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 16px;
+    color: #718096;
+    /* cinza apagado */
+    cursor: pointer;
+    transition: 0.2s;
+    opacity: 0.4;
+    /* inativo */
+}
+
+.remove-content-btn:hover {
+    color: #D53F8C;
+    opacity: 1;
+    transform: scale(1.15);
+}
+/* #endregion */
+
+ /* #region BARRA DE CONFIRMAÇÃO (SEM MODAL) */
+.confirm-bar {
+    width: 100%;
+    background: #1E2A38;
+    border: 1px solid #2C3E50;
+    padding: 18px 22px;
+    margin-top: 15px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    animation: fadeIn 0.2s ease;
+}
+
+.confirm-text strong {
+    display: block;
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 4px;
+}
+
+.confirm-text p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #A0AEC0;
+}
+
+.confirm-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.confirm-cancel,
+.confirm-ok {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: 0.2s ease;
+}
+
+.confirm-cancel {
+    background: #2D3748;
+    color: #CBD5E0;
+}
+
+.confirm-cancel:hover {
+    background: #3A465A;
+}
+
+.confirm-ok {
+    background: #4FD1C5;
+    color: #15202B;
+}
+
+.confirm-ok:hover {
+    opacity: 0.85;
+}
+/* #endregion */
+
+ /* #region BOTÕES DE AÇÃO (EXCLUIR / SALVAR) */
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.delete-btn,
+.save-btn {
+    padding: 15px 30px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+
+.delete-btn {
+    background-color: #4FD1C5;
+    color: #15202B;
+}
+
+.save-btn {
+    background-color: white;
+    color: #D53F8C;
+}
+
+.delete-btn:hover,
+.save-btn:hover {
+    opacity: 0.9;
+}
+/* #endregion */
+
+ /* #region SIDEBAR - SELETOR DE TIPO DE CONTEÚDO */
+.content-type-selector {
+    display: flex;
+    justify-content: space-between;
+    background-color: #1E2A38;
+    border-radius: 6px;
+    padding: 5px;
+}
+
+.type-radio {
+    display: none;
+}
+
+.type-label {
+    flex: 1;
+    text-align: center;
+    padding: 10px 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #4A5568;
+    border-radius: 4px;
+    position: relative;
+}
+
+.type-label::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 50%;
+    width: 1px;
+    height: 60%;
+    background: #2C3E50;
+    transform: translateY(-50%);
+}
+
+.type-label:last-child::after {
+    content: none;
+}
+
+.type-label:hover {
+    color: white;
+}
+
+.type-radio:checked + .type-label {
+    background: #D53F8C;
+    color: white;
+}
+
+.type-radio:checked + .type-label::after {
+    content: none;
+}
+/* #endregion */
+
+ /* #region SIDEBAR - SEÇÕES DO EDITOR DE CONTEÚDO */
+.content-type-section {
+    display: none;
+}
+/* #endregion */
+
+ /* #region UTILIDADES E ANIMAÇÕES */
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+/* #endregion */
+
+ /* #region SEGURAR E ARRASTAR */
+.drag-selected {
+    opacity: 0.4;
+}
+
+.drag-ghost {
+    opacity: 0.2 !important;
+}
+
+.drag-moving {
+    transform: scale(1.05);
+    box-shadow: 0px 10px 40px rgba(0,0,0,0.25);
+    border-radius: 12px;
+}
+/* #endregion */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* NOVO ESTILO: Textarea menor para perguntas na sidebar */
+.textarea-sm-sidebar {
+    height: 80px;
+    margin-bottom: 10px;
+}
+
+/* NOVO ESTILO: Label menor para os títulos dentro do bloco de pergunta */
+.small-label {
+    margin-bottom: 4px;
+    margin-top: 15px;
+}
+
+/* #region SIDEBAR - QUIZ EDITOR */
+
+.quiz-question-block {
+    background-color: #2D3748; /* Fundo levemente mais escuro para o bloco da pergunta */
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #4A5568; /* Borda sutil */
+}
+
+.answer-options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaço entre as opções de resposta */
+}
+
+.answer-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.correct-radio {
+    width: 20px;
+    height: 20px;
+    accent-color: #4FD1C5; /* Cor de destaque para o radio button (resposta correta) */
+    cursor: pointer;
+}
+
+.answer-input {
+    flex: 1; /* Faz o input de texto preencher o espaço restante */
+    margin: 0;
+    height: 40px; 
+}
+
+.remove-answer-btn {
+    background: #E53E3E; /* Vermelho para exclusão */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+    cursor: pointer;
+    line-height: 1;
+    transition: background 0.2s;
+    /* Adicionado na versão JS: .hidden { display: none; } */
+}
+
+.remove-answer-btn:hover {
+    background: #C53030;
+}
+
+.quiz-controls {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.add-answer-btn,
+.remove-question-btn,
+.add-question-btn {
+    padding: 8px 15px;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: opacity 0.2s;
+    border: 1px solid transparent;
+}
+
+.add-answer-btn {
+    background: #4FD1C5; /* Cor de destaque para adicionar */
+    color: #15202B;
+    flex: 1;
+}
+
+.remove-question-btn {
+    background: #E53E3E;
+    color: white;
+    border: none;
+    flex-shrink: 0;
+}
+
+/* Estilo para o botão de adicionar nova pergunta */
+.add-question-btn {
+    width: 100%;
+    background: #15202B; /* Fundo escuro */
+    color: #4FD1C5;
+    border: 1px dashed #4FD1C5; /* Borda tracejada */
+    margin-top: 10px;
+}
+
+.add-question-btn:hover {
+    background: #1E2A38;
+}
+
+/* #endregion */
+
+/* #region SIDEBAR - SCROLL E RODAPÉ FIXO */
+
+/* 1. Modifica a Sidebar para gerenciar o layout flexível */
+.sidebar {
+    padding: 0; /* Remove padding total para controlar individualmente */
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; 
+}
+
+/* 2. Área que Contém o Conteúdo Scrollável */
+.sidebar-scrollable-content {
+    flex: 1; /* Ocupa todo o espaço vertical restante */
+    overflow-y: auto; /* Habilita o scroll vertical */
+    padding: 30px 20px; /* Adiciona o padding que o .sidebar tinha antes */
+    padding-bottom: 10px; /* Ajuste para não encostar no footer */
+}
+
+/* 4. Estilo do Botão Salvar (reutilizando a cor de destaque) */
+.save-btn {
+    width: 100%;
+    background-color: #4FD1C5; /* Cor de destaque Aqua */
+    color: #15202B; 
+    border: none;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: background 0.2s;
+}
+
+.save-btn:hover {
+    background-color: #38b2ac;
+}
+
+/* #endregion */
+
+
+.sidebar {
+    /* Torna a sidebar fixa e não-móvel, como solicitado */
+    position: fixed; 
+    top: 0;
+    right: -350px; /* Esconde a sidebar fora da tela (350px é a largura dela) */
+    width: 350px;
+    height: 100vh;
+    background-color: #1E2A38;
+    z-index: 1000; /* Garante que fique acima de outros elementos */
+    transition: right 0.3s ease-in-out; /* Adiciona animação de deslizamento */
+
+    /* Mantém o layout interno (seções) */
+    padding: 0; /* Remove padding total para controlar individualmente */
+    display: flex; 
+    flex-direction: column; 
+    overflow: hidden; 
+}
+
+/* Estado Aberto (Adicionado pelo JS) */
+.sidebar.open {
+    right: 0; /* Traz a sidebar para a tela */
+}

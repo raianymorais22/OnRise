@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ONRISE — Notícias</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">ONRISE</div>
+
+    <nav class="main-nav" aria-label="editoriais">
+      <button class="editorial-btn active" data-category="all">Todos</button>
+      <button class="editorial-btn" data-category="economia">Economia</button>
+      <button class="editorial-btn" data-category="criptomoeda">Criptomoeda</button>
+      <button class="editorial-btn" data-category="startups">Startups</button>
+      <button class="editorial-btn" data-category="tecnologia">Tecnologia</button>
+      <button class="editorial-btn" data-category="esportes">Esportes</button>
+      <button class="editorial-btn" data-category="opiniao">Opinião</button>
+    </nav>
+
+    <div class="header-right">
+      <div class="pills">
+        <div class="pill trilha">TRILHA</div>
+        <div class="pill missoes">MISSÕES</div>
+        <div class="pill noticias">NOTÍCIAS</div>
+        <div class="pill ajustes">AJUSTES</div>
+        <a href="info.html"><div class="pill ajustes">INFORMAÇÕES</div></a>
+        <div class="pill ajustes"><a href="forum.html">FORUM</a></div>
+        <div class="pill perfil"><a href="perfil.html">PERFIL</a></div>
+      </div>
+
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="left-col">
+      <a href="noticia.html?id=1" class="card big-card fade-up" data-category="economia">
+        <img src="imgs/economia.png" alt="foto da notícia" style="width:100%; border-radius:10px;">
+        <div class="content">
+        <div imgs src="economia.png" alt="foto da notícia"></div>
+          <div class="eyebrow">ECONOMIA</div>
+          <h2>‘Legado das eleições 2026 será horrível, todos perderemos’, diz economista da ARX</h2>
+          <p class="card-meta">Publicado em 14/10/2025 • HÁ 2 HORAS</p>
+        </div>
+      </a>
+
+      <div class="small-list">
+        <a href="noticia.html?id=2" class="small-item fade-up" data-category="criptomoeda">
+<img src="imgs/cripto.png" alt="Imagem da notícia de cripto" class="thumb" style="width: 25%; height: 100px; border-radius: 10px; object-fit: cover;" />
+          <div class="meta">
+            <div class="kicker">CRIPTOMOEDA</div>
+            <h3> Ouro atinge novo recorde de US$ 4.200, enquanto bilhões em criptomoedas saem das corretoras</h3>
+            <div class="time">HÁ 3 HORAS</div>
+          </div>
+        </a>
+
+        <a href="noticia.html?id=3" class="small-item fade-up" data-category="startups">
+            <img src="imgs/startup.png" alt="Imagem da notícia de startup" class="thumb" style="width: 25%; height: 100px; border-radius: 10px; object-fit: cover;" />
+          <div class="meta">
+            <div class="kicker">STARTUPS</div>
+            <h3>Ele vendeu sua empresa por US$ 54 milhões e agora aposta em IA como futuro</h3>
+            <div class="time">HÁ 5 HORAS</div>
+          </div>
+        </a>
+
+        <a href="noticia.html?id=4" class="small-item fade-up" data-category="tecnologia">
+          <img src="imgs/tecnologia.png" alt="Imagem da notícia de tecnologia" class="thumb" style="width: 25%; height: 100px; border-radius: 10px; object-fit: cover;" />
+          <div class="meta">
+            <div class="kicker">TECNOLOGIA</div>
+            <h3>De ex-estudante a bilionário: como o criador da Figma fez uma empresa de design valer R$ 400 bilhões</h3>
+            <div class="time">HÁ 1 DIA</div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <aside class="right-col fade-up" data-category="all">
+      <h3>Destaques</h3>
+      <div class="destaques-list">
+        <a href="noticia.html?id=5" class="destaque-item" data-category="tecnologia">
+          <div class="numero">1</div>
+          <div class="destaque-text">InfoMoney é o primeiro veículo de comunicação a integrar Programa Mantenedores Aberje</div>
+        </a>
+
+        <a href="noticia.html?id=6" class="destaque-item" data-category="economia">
+          <div class="numero">2</div>
+          <div class="destaque-text">Selic alta mantém pressão e B3 (B3SA3) apresenta dados mistos em prévia do 3T25</div>
+        </a>
+
+        <a href="noticia.html?id=7" class="destaque-item" data-category="tecnologia">
+          <div class="numero">3</div>
+          <div class="destaque-text">Morgan Stanley supera em lucro e receita no terceiro trimestre; ação sobe</div>
+        </a>
+
+        <a href="noticia.html?id=8" class="destaque-item" data-category="Mercados">
+          <div class="numero">4</div>
+          <div class="destaque-text">Eletrobras vende “último grande risco” para tese de investimentos e ações sobem</div>
+        </a>
+
+        <a href="noticia.html?id=9" class="destaque-item" data-category="esportes">
+          <div class="numero">5</div>
+          <div class="destaque-text">Corinthians tem déficit de R$ 60 mi no 1º semestre e vê dívida crescer para R$ 2,6 bilhões</div>
+        </a>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="footer">
+    <p>© 2025 ONRISE — Todos os direitos reservados.</p>
+  </footer>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
